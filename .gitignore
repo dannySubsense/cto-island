@@ -5,3 +5,4 @@ MACHINE-SETUP.md
 node_modules/
 .next/
 dist/
+AGENTS.md
