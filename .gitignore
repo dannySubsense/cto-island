@@ -6,3 +6,4 @@ node_modules/
 .next/
 dist/
 AGENTS.md
+docs/tooling/

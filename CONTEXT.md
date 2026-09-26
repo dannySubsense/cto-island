@@ -13,6 +13,7 @@ the site. It publishes the content it receives and never writes that content.
 | `04-deploy/` | Taking the site live |
 | `_references/` | Stable reference material (design inspiration, rules) |
 | `docs/` | Northstar and decision records |
+| `scripts/`, `.claude/` | Session tooling (startup probe, relay command, hooks). Not a workspace; don't change as part of site work |
 
 ## Routing
 
