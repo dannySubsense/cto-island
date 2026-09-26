@@ -1,0 +1,770 @@
+{
+ "url": "https://markatwood.substack.com/p/the-strategy-of-technology-was-a",
+ "viewport": [
+  1440,
+  900
+ ],
+ "scrollHeight": 6058,
+ "fontFilesDownloaded": [
+  "https://fonts.gstatic.com/s/spectral/v13/rnCr-xNNww_2s0amA9M5knjsS_ul.woff2",
+  "https://fonts.gstatic.com/s/spectral/v13/rnCt-xNNww_2s0amA9M8onrmTNmnUHo.woff2",
+  "https://fonts.gstatic.com/s/spectral/v13/rnCs-xNNww_2s0amA9vmtm3BafaPWnII.woff2"
+ ],
+ "thisMachineMonospaceFallback": "DejaVuSansMono.ttf: \"DejaVu Sans Mono\" \"Book\"",
+ "extract": {
+  "url": "https://markatwood.substack.com/p/the-strategy-of-technology-was-a",
+  "title": "The Strategy of Technology Was a Brief, Not a Book",
+  "viewport": {
+   "width": 1440,
+   "height": 900
+  },
+  "errors": [],
+  "colors": {
+   "pageBackground": "rgba(0, 0, 0, 0)",
+   "backgroundColors": [
+    {
+     "value": "rgb(19, 59, 59)",
+     "count": 30,
+     "areaPct": 1.8
+    },
+    {
+     "value": "rgb(4, 47, 46)",
+     "count": 8,
+     "areaPct": 96.4
+    },
+    {
+     "value": "rgb(29, 68, 67)",
+     "count": 7,
+     "areaPct": 0
+    },
+    {
+     "value": "rgb(22, 163, 74)",
+     "count": 6,
+     "areaPct": 1.7
+    },
+    {
+     "value": "rgb(155, 172, 171)",
+     "count": 5,
+     "areaPct": 0
+    },
+    {
+     "value": "rgb(255, 255, 255)",
+     "count": 3,
+     "areaPct": 0.1
+    },
+    {
+     "value": "rgba(255, 255, 255, 0)",
+     "count": 1,
+     "areaPct": 0
+    }
+   ],
+   "textColors": [
+    {
+     "value": "rgb(155, 172, 171)",
+     "count": 60
+    },
+    {
+     "value": "rgb(227, 237, 237)",
+     "count": 56
+    },
+    {
+     "value": "rgb(255, 255, 255)",
+     "count": 5
+    },
+    {
+     "value": "rgb(22, 163, 74)",
+     "count": 1
+    }
+   ],
+   "accentCandidates": [
+    {
+     "value": "rgb(155, 172, 171)",
+     "count": 30
+    },
+    {
+     "value": "rgb(227, 237, 237)",
+     "count": 23
+    },
+    {
+     "value": "rgb(0, 0, 0)",
+     "count": 21
+    },
+    {
+     "value": "rgb(19, 59, 59)",
+     "count": 8
+    },
+    {
+     "value": "rgb(255, 255, 255)",
+     "count": 6
+    },
+    {
+     "value": "rgb(22, 163, 74)",
+     "count": 5
+    }
+   ]
+  },
+  "typography": {
+   "uniqueFamilies": [
+    {
+     "value": "system-ui",
+     "count": 355
+    },
+    {
+     "value": "Spectral",
+     "count": 176
+    },
+    {
+     "value": "SF Compact",
+     "count": 23
+    },
+    {
+     "value": "SF Pro Display",
+     "count": 14
+    },
+    {
+     "value": "Arial",
+     "count": 7
+    }
+   ],
+   "headings": {
+    "h1": {
+     "size": "24px",
+     "weight": "700",
+     "lineHeight": "32px",
+     "letterSpacing": "normal",
+     "family": "SF Pro Display"
+    },
+    "h3": {
+     "size": "18px",
+     "weight": "400",
+     "lineHeight": "24px",
+     "letterSpacing": "normal",
+     "family": "SF Pro Display"
+    },
+    "h2": {
+     "size": "30.875px",
+     "weight": "700",
+     "lineHeight": "35.815px",
+     "letterSpacing": "normal",
+     "family": "SF Pro Display"
+    },
+    "h4": {
+     "size": "20px",
+     "weight": "700",
+     "lineHeight": "24px",
+     "letterSpacing": "normal",
+     "family": "SF Pro Display"
+    }
+   },
+   "body": {
+    "size": "19px",
+    "weight": "400",
+    "lineHeight": "30.4px",
+    "family": "Spectral",
+    "maxWidth": "none"
+   },
+   "sizeDistribution": [
+    {
+     "value": "19px",
+     "count": 32
+    },
+    {
+     "value": "13px",
+     "count": 22
+    },
+    {
+     "value": "14px",
+     "count": 21
+    },
+    {
+     "value": "15px",
+     "count": 17
+    },
+    {
+     "value": "11px",
+     "count": 10
+    },
+    {
+     "value": "12px",
+     "count": 9
+    },
+    {
+     "value": "30.875px",
+     "count": 5
+    },
+    {
+     "value": "20px",
+     "count": 2
+    },
+    {
+     "value": "17px",
+     "count": 1
+    },
+    {
+     "value": "32px",
+     "count": 1
+    },
+    {
+     "value": "18px",
+     "count": 1
+    },
+    {
+     "value": "24px",
+     "count": 1
+    }
+   ],
+   "weightDistribution": [
+    {
+     "value": "400",
+     "count": 62
+    },
+    {
+     "value": "500",
+     "count": 31
+    },
+    {
+     "value": "600",
+     "count": 15
+    },
+    {
+     "value": "700",
+     "count": 14
+    }
+   ]
+  },
+  "effects": {
+   "radii": [
+    {
+     "value": "8px",
+     "count": 35
+    },
+    {
+     "value": "9999px",
+     "count": 18
+    },
+    {
+     "value": "4px",
+     "count": 17
+    },
+    {
+     "value": "20px",
+     "count": 10
+    },
+    {
+     "value": "8px 0px 0px 8px",
+     "count": 2
+    },
+    {
+     "value": "0px 8px 8px 0px",
+     "count": 2
+    },
+    {
+     "value": "12px",
+     "count": 1
+    }
+   ],
+   "shadows": [
+    {
+     "value": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+     "count": 4
+    },
+    {
+     "value": "rgba(255, 255, 255, 0.2) 0px 1px 0px 0px inset, rgba(0, 0, 0, 0.1) 0px -1px 0px 0px inset",
+     "count": 2
+    },
+    {
+     "value": "rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px",
+     "count": 1
+    }
+   ],
+   "transitions": [
+    "all",
+    "height 0.125s cubic-bezier(0.19, 1, 0.22, 1)",
+    "transform 0.125s cubic-bezier(0.19, 1, 0.22, 1)",
+    "color 0.25s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.25s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.25s cubi",
+    "transform 0.25s cubic-bezier(0.19, 1, 0.22, 1), width 0.25s cubic-bezier(0.19, 1, 0.22, 1)"
+   ]
+  },
+  "spacingDistribution": [
+   {
+    "value": "4px",
+    "count": 61
+   },
+   {
+    "value": "8px",
+    "count": 37
+   },
+   {
+    "value": "16px",
+    "count": 32
+   },
+   {
+    "value": "20px",
+    "count": 30
+   },
+   {
+    "value": "32px",
+    "count": 22
+   },
+   {
+    "value": "12px",
+    "count": 20
+   },
+   {
+    "value": "6px",
+    "count": 13
+   },
+   {
+    "value": "normal 8px",
+    "count": 10
+   },
+   {
+    "value": "30.875px",
+    "count": 5
+   },
+   {
+    "value": "19.2969px",
+    "count": 5
+   },
+   {
+    "value": "10px",
+    "count": 4
+   },
+   {
+    "value": "24px",
+    "count": 3
+   },
+   {
+    "value": "normal 24px",
+    "count": 3
+   },
+   {
+    "value": "48px",
+    "count": 2
+   },
+   {
+    "value": "18px",
+    "count": 1
+   }
+  ],
+  "buttons": [
+   {
+    "fontSize": "19px",
+    "fontWeight": "400",
+    "letterSpacing": "normal",
+    "textTransform": "none",
+    "borderRadius": "8px",
+    "paddingTop": "0px",
+    "paddingLeft": "0px"
+   },
+   {
+    "fontSize": "15px",
+    "fontWeight": "600",
+    "letterSpacing": "normal",
+    "textTransform": "none",
+    "borderRadius": "8px",
+    "paddingTop": "0px",
+    "paddingLeft": "16px"
+   },
+   {
+    "fontSize": "13.3333px",
+    "fontWeight": "400",
+    "letterSpacing": "normal",
+    "textTransform": "none",
+    "borderRadius": "20px",
+    "paddingTop": "0px",
+    "paddingLeft": "12px"
+   },
+   {
+    "fontSize": "13.3333px",
+    "fontWeight": "400",
+    "letterSpacing": "normal",
+    "textTransform": "none",
+    "borderRadius": "8px",
+    "paddingTop": "0px",
+    "paddingLeft": "0px"
+   },
+   {
+    "fontSize": "30.875px",
+    "fontWeight": "400",
+    "letterSpacing": "normal",
+    "textTransform": "none",
+    "borderRadius": "8px",
+    "paddingTop": "0px",
+    "paddingLeft": "0px"
+   }
+  ],
+  "layout": {
+   "bodyPadding": "0px",
+   "containerMaxWidth": "none",
+   "containerPadding": "0px",
+   "containerWidth": "1440px"
+  },
+  "cards": [],
+  "images": [],
+  "spacingSamples": [
+   {
+    "tag": "article",
+    "margin": "0px",
+    "padding": "32px 0px 0px",
+    "gap": "normal"
+   },
+   {
+    "tag": "h1",
+    "margin": "0px",
+    "padding": "0px",
+    "gap": "normal"
+   },
+   {
+    "tag": "h2",
+    "margin": "30.875px 0px 19.2969px",
+    "padding": "0px",
+    "gap": "normal"
+   },
+   {
+    "tag": "h3",
+    "margin": "12px 0px 0px",
+    "padding": "0px",
+    "gap": "normal"
+   },
+   {
+    "tag": "p",
+    "margin": "0px 0px 20px 20px",
+    "padding": "0px",
+    "gap": "normal"
+   },
+   {
+    "tag": "button",
+    "margin": "0px",
+    "padding": "0px",
+    "gap": "normal"
+   }
+  ],
+  "sectionGaps": [],
+  "grid": {
+   "columns": 2,
+   "gap": "normal 24px",
+   "template": "544px 160px",
+   "selector": "div.container-Qnseki"
+  },
+  "gridCount": 3,
+  "focusVisible": false,
+  "reducedMotion": false
+ },
+ "extra": {
+  "blocked": false,
+  "rootVars": {
+   "--color_theme_bg_pop": "#16a34a",
+   "--background_pop": "#16a34a",
+   "--color_theme_bg_web": "#042f2e",
+   "--cover_bg_color": "#042f2e",
+   "--cover_bg_color_secondary": "#133b3b",
+   "--background_pop_darken": "#138d40",
+   "--print_on_pop": "#ffffff",
+   "--color_theme_bg_pop_darken": "#138d40",
+   "--color_theme_print_on_pop": "#ffffff",
+   "--color_theme_bg_pop_20": "rgba(22, 163, 74, 0.2)",
+   "--color_theme_bg_pop_30": "rgba(22, 163, 74, 0.3)",
+   "--print_pop": "#16a34a",
+   "--color_theme_accent": "#16a34a",
+   "--cover_print_primary": "#ffffff",
+   "--cover_print_secondary": "#d9d9d9",
+   "--cover_print_tertiary": "#d9d9d9",
+   "--cover_border_color": "#ffffff",
+   "--home_hero": "newspaper",
+   "--home_posts": "list",
+   "--home_show_top_posts": "true",
+   "--web_bg_color": "#042f2e",
+   "--background_contrast_1": "#133b3b",
+   "--background_contrast_2": "#264b4a",
+   "--background_contrast_3": "#4b6a69",
+   "--background_contrast_4": "#6f8887",
+   "--background_contrast_5": "#b0bdbd",
+   "--color_theme_bg_contrast_1": "#133b3b",
+   "--color_theme_bg_contrast_2": "#264b4a",
+   "--color_theme_bg_contrast_3": "#4b6a69",
+   "--color_theme_bg_contrast_4": "#6f8887",
+   "--color_theme_bg_contrast_5": "#b0bdbd",
+   "--color_theme_bg_elevated": "#133b3b",
+   "--color_theme_bg_elevated_secondary": "#264b4a",
+   "--color_theme_bg_elevated_tertiary": "#4b6a69",
+   "--color_theme_detail": "#1d4443",
+   "--background_contrast_pop": "rgba(22, 163, 74, 0.4)",
+   "--color_theme_bg_contrast_pop": "rgba(22, 163, 74, 0.4)",
+   "--theme_bg_is_dark": "1",
+   "--print_on_web_bg_color": "hsl(178.60465116279076, 21.078431372548938%, 90.99999999999999%)",
+   "--print_secondary_on_web_bg_color": "#9bacab",
+   "--background_pop_rgb": "22, 163, 74",
+   "--color_theme_bg_pop_rgb": "22, 163, 74",
+   "--color_theme_accent_rgb": "22, 163, 74"
+  },
+  "body": {
+   "bg": "rgba(0, 0, 0, 0)",
+   "color": "rgb(54, 55, 55)",
+   "font": "Spectral, serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+   "size": "19px",
+   "lineHeight": "normal"
+  },
+  "fontsLoaded": [
+   [
+    "Spectral",
+    "400",
+    "italic",
+    "unloaded"
+   ],
+   [
+    "Spectral",
+    "400",
+    "italic",
+    "unloaded"
+   ],
+   [
+    "Spectral",
+    "400",
+    "italic",
+    "unloaded"
+   ],
+   [
+    "Spectral",
+    "400",
+    "italic",
+    "loaded"
+   ],
+   [
+    "Spectral",
+    "400",
+    "normal",
+    "unloaded"
+   ],
+   [
+    "Spectral",
+    "400",
+    "normal",
+    "unloaded"
+   ],
+   [
+    "Spectral",
+    "400",
+    "normal",
+    "unloaded"
+   ],
+   [
+    "Spectral",
+    "400",
+    "normal",
+    "loaded"
+   ],
+   [
+    "Spectral",
+    "600",
+    "normal",
+    "unloaded"
+   ],
+   [
+    "Spectral",
+    "600",
+    "normal",
+    "unloaded"
+   ],
+   [
+    "Spectral",
+    "600",
+    "normal",
+    "unloaded"
+   ],
+   [
+    "Spectral",
+    "600",
+    "normal",
+    "loaded"
+   ]
+  ],
+  "regions": [
+   {
+    "tag": "DIV",
+    "cls": "pencraft pc-display-flex pc-gap-12 pc-paddingLeft-20 pc-padd",
+    "display": "flex",
+    "gridTemplateColumns": "none",
+    "gap": "12px",
+    "padding": "0px 20px",
+    "box": {
+     "x": 0,
+     "y": 0,
+     "w": 1440,
+     "h": 72
+    },
+    "children": [
+     {
+      "tag": "DIV",
+      "cls": "logoContainer-p12gJb",
+      "box": {
+       "x": 25,
+       "y": 16,
+       "w": 532,
+       "h": 40
+      }
+     },
+     {
+      "tag": "DIV",
+      "cls": "titleContainer-DJYq5v",
+      "box": {
+       "x": 569,
+       "y": 19,
+       "w": 308,
+       "h": 33
+      }
+     },
+     {
+      "tag": "DIV",
+      "cls": "pencraft pc-display-flex pc-justifyConte",
+      "box": {
+       "x": 888,
+       "y": 16,
+       "w": 532,
+       "h": 40
+      }
+     }
+    ]
+   },
+   {
+    "tag": "DIV",
+    "cls": "pencraft pc-display-flex pc-flexDirection-column pc-gap-16 p",
+    "display": "flex",
+    "gridTemplateColumns": "none",
+    "gap": "16px",
+    "padding": "32px 0px",
+    "box": {
+     "x": 0,
+     "y": 4372,
+     "w": 1440,
+     "h": 694
+    },
+    "children": [
+     {
+      "tag": "DIV",
+      "cls": "pencraft pc-display-flex pc-flexDirectio",
+      "box": {
+       "x": 356,
+       "y": 4404,
+       "w": 728,
+       "h": 96
+      }
+     },
+     {
+      "tag": "DIV",
+      "cls": "single-post-section comments-section",
+      "box": {
+       "x": 0,
+       "y": 4516,
+       "w": 1440,
+       "h": 518
+      }
+     }
+    ]
+   }
+  ],
+  "backgroundPatterns": [],
+  "reading": {
+   "paragraphs": 19,
+   "family": "Spectral, serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+   "size": "19px",
+   "lineHeight": "30.4px",
+   "letterSpacing": "normal",
+   "weight": "400",
+   "color": "rgb(227, 237, 237)",
+   "marginBottom": "20px",
+   "marginTop": "0px",
+   "columnWidth": 704,
+   "columnLeft": 380,
+   "viewportWidth": 1440,
+   "approxCharsPerLine": 81,
+   "title": {
+    "text": "The Strategy of Technology Was a Brief, Not a Book",
+    "family": "\"SF Pro Display\", -apple-system-headline, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+    "size": "32px",
+    "weight": "700",
+    "lineHeight": "36px",
+    "letterSpacing": "normal",
+    "width": 728
+   }
+  },
+  "borders": [
+   [
+    "1px solid rgb(29, 68, 67)",
+    146
+   ],
+   [
+    "1px solid rgb(22, 163, 74)",
+    7
+   ],
+   [
+    "1px solid rgb(255, 255, 255)",
+    7
+   ],
+   [
+    "4px solid rgb(22, 163, 74)",
+    1
+   ]
+  ],
+  "svgStrokes": [
+   [
+    "rgb(155, 172, 171) 2px",
+    69
+   ],
+   [
+    "rgb(227, 237, 237) 2px",
+    22
+   ],
+   [
+    "rgb(111, 136, 135) 2px",
+    6
+   ],
+   [
+    "rgba(0, 0, 0, 0) 1.8px",
+    3
+   ],
+   [
+    "rgb(4, 47, 46) 8.125px",
+    2
+   ],
+   [
+    "rgb(155, 172, 171) 1.8px",
+    2
+   ]
+  ],
+  "svgFills": [
+   [
+    "rgb(255, 103, 25)",
+    4
+   ],
+   [
+    "rgb(155, 172, 171)",
+    2
+   ]
+  ]
+ },
+ "phone390Reading": {
+  "paragraphs": 19,
+  "family": "Spectral, serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+  "size": "17px",
+  "lineHeight": "27.2px",
+  "letterSpacing": "normal",
+  "weight": "400",
+  "color": "rgb(227, 237, 237)",
+  "marginBottom": "20px",
+  "marginTop": "0px",
+  "columnWidth": 334,
+  "columnLeft": 40,
+  "viewportWidth": 390,
+  "approxCharsPerLine": 44,
+  "title": {
+   "text": "The Strategy of Technology Was a Brief, Not a Book",
+   "family": "\"SF Pro Display\", -apple-system-headline, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+   "size": "32px",
+   "weight": "700",
+   "lineHeight": "36px",
+   "letterSpacing": "normal",
+   "width": 358
+  }
+ }
+}

@@ -25,7 +25,7 @@ OUT = HERE.parent / "study" / "reference"
 EXTRACT = (HERE / "extract.js").read_text()
 
 # Measurements extract.js does not take: layout regions, borders, SVG strokes and fills,
-# gradient background patterns, CSS custom properties on :root.
+# gradient background patterns, reading measurements, CSS custom properties on :root.
 EXTRA = r"""() => {
   const px = v => Math.round(v);
   const box = el => { const r = el.getBoundingClientRect(); return {x: px(r.x), y: px(r.y), w: px(r.width), h: px(r.height)}; };
@@ -78,13 +78,48 @@ EXTRA = r"""() => {
         backgroundColor: s.backgroundColor, filter: s.filter, opacity: s.opacity, position: s.position});
     }
   }
+  // Reading measurements: the paragraph style that carries the most text, its column width and
+  // characters per line, the title style, and paragraph spacing.
+  let reading = null;
+  const byStyle = new Map();
+  for (const p of document.querySelectorAll('p')) {
+    const r = p.getBoundingClientRect(); const len = (p.innerText || '').trim().length;
+    if (!r.width || len < 80) continue;
+    const s = getComputedStyle(p);
+    const key = [s.fontFamily, s.fontSize, s.lineHeight].join('|');
+    const e = byStyle.get(key) || {chars: 0, el: p, count: 0}; e.chars += len; e.count++; byStyle.set(key, e);
+  }
+  const top1 = [...byStyle.values()].sort((a, b) => b.chars - a.chars)[0];
+  if (top1) {
+    const p = top1.el, s = getComputedStyle(p), r = p.getBoundingClientRect();
+    const probe = document.createElement('span');
+    probe.style.cssText = `font:${s.fontStyle} ${s.fontWeight} ${s.fontSize} ${s.fontFamily};letter-spacing:${s.letterSpacing};position:absolute;visibility:hidden;white-space:nowrap`;
+    probe.textContent = 'the quick brown fox jumps over the lazy dog, and then the dog wakes up'.repeat(2);
+    document.body.appendChild(probe); const avg = probe.getBoundingClientRect().width / probe.textContent.length; probe.remove();
+    // The title is the largest visible h1 (a publication's name is often an h1 too, but smaller).
+    const h1 = [...document.querySelectorAll('h1')].filter(h => h.getBoundingClientRect().width > 0)
+      .sort((x, y) => parseFloat(getComputedStyle(y).fontSize) - parseFloat(getComputedStyle(x).fontSize))[0];
+    const hs = h1 && getComputedStyle(h1);
+    reading = {
+      paragraphs: top1.count, family: s.fontFamily, size: s.fontSize, lineHeight: s.lineHeight,
+      letterSpacing: s.letterSpacing, weight: s.fontWeight, color: s.color,
+      marginBottom: s.marginBottom, marginTop: s.marginTop,
+      columnWidth: Math.round(r.width), columnLeft: Math.round(r.x), viewportWidth: innerWidth,
+      approxCharsPerLine: Math.round(r.width / avg),
+      title: hs && {text: h1.innerText.slice(0, 80), family: hs.fontFamily, size: hs.fontSize, weight: hs.fontWeight,
+        lineHeight: hs.lineHeight, letterSpacing: hs.letterSpacing, width: Math.round(h1.getBoundingClientRect().width)},
+    };
+  }
   const b = getComputedStyle(document.body);
+  const blocked = /attention required|you have been blocked|verify you are human|just a moment/i.test(document.title + ' ' + (document.body.innerText || '').slice(0, 500));
   return {
+    blocked,
     rootVars: vars,
     body: {bg: b.backgroundColor, color: b.color, font: b.fontFamily, size: b.fontSize, lineHeight: b.lineHeight},
     fontsLoaded: [...document.fonts].map(f => [f.family, f.weight, f.style, f.status]),
     regions: regions.slice(0, 6),
     backgroundPatterns: patterns.slice(0, 12),
+    reading,
     borders: top(borders, 12),
     svgStrokes: top(strokes, 12),
     svgFills: top(fills, 10),
@@ -109,6 +144,7 @@ def main(url: str, name: str) -> None:
         page.set_viewport_size({"width": 390, "height": 844})
         page.wait_for_timeout(1000)
         page.screenshot(path=str(OUT / f"{name}-viewport-390.png"))
+        phone_reading = page.evaluate(EXTRA).get("reading")
         browser.close()
     fallback = subprocess.run(["fc-match", "monospace"], capture_output=True, text=True).stdout.strip()
     record = {
@@ -119,9 +155,12 @@ def main(url: str, name: str) -> None:
         "thisMachineMonospaceFallback": fallback,
         "extract": dom,
         "extra": extra,
+        "phone390Reading": phone_reading,
     }
     (OUT / f"{name}-measurements.json").write_text(json.dumps(record, indent=1, ensure_ascii=False))
     print(f"wrote {OUT}/{name}-*  errors={dom.get('errors')} truncated={dom.get('truncated')}")
+    if extra.get("blocked"):
+        print("WARNING: the site served a bot-check or block page; these measurements are not of the reference.")
 
 
 if __name__ == "__main__":
