@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study — colour, grid, type, reader</title>
+<!-- Study page only, not part of the site. All text in the layout is placeholder. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400&family=Cascadia+Mono:wght@400&family=JetBrains+Mono:wght@400&family=IBM+Plex+Mono:wght@400&family=Geist+Mono:wght@400&family=Source+Serif+4:ital,wght@0,400;1,400&family=IBM+Plex+Sans:wght@400&display=swap">
+<style>
+  :root {
+    /* Every value below is set from the controls by the script; these are only first-paint defaults. */
+    --field: oklch(0.24 0.09 244);
+    --blob1: transparent; --blob2: transparent; --blob3: transparent;
+    --grid-fine: transparent; --grid-major: transparent;
+    --cell: 28px; --major: 140px;
+    --ink: #EFEBE0;
+    --dim: #8A867A;
+    --line: #33312A;
+    --accent: #FF4D00;
+    --box-fill: transparent;
+    --font: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --read-font: var(--font);
+    --pad: 36px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--field);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 12px;
+    overflow: hidden;              /* desktop: the page never scrolls; only the reader does */
+  }
+
+  /* Background: colour field, soft shapes, two-level grid (Formas construction).
+     The shapes are pre-soft radial gradients, not filter: blur(), so moving them costs nothing:
+     the browser only moves them, it doesn't re-blur them every frame. */
+  .blobs { position: fixed; inset: 0; overflow: hidden; pointer-events: none; }
+  .blobs span {
+    position: absolute; left: 0; top: 0; border-radius: 50%;
+    background: radial-gradient(closest-side, currentColor 0%, transparent 100%);
+    transform: translate3d(var(--x), var(--y), 0) scale(var(--s, 1));
+    will-change: transform;
+    transition: transform 5s cubic-bezier(0.37, 0, 0.23, 1), color 2.2s ease-in-out;
+  }
+  body.morph-in .blobs span { transition: transform 5s cubic-bezier(0.37, 0, 0.23, 1), color 0.9s ease-in-out; }
+  .blobs .b1 { width: 80vw; height: 80vw; --x: -22vw; --y: -30vw; color: var(--blob1); }
+  .blobs .b2 { width: 70vw; height: 70vw; --x: 52vw; --y: 5vh; color: var(--blob2); }
+  .blobs .b3 { width: 65vw; height: 65vw; --x: 15vw; --y: 55vh; color: var(--blob3); }
+  body.no-blur .blobs { display: none; }
+  .grid {
+    position: fixed; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(var(--grid-fine) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-fine) 1px, transparent 1px),
+      linear-gradient(var(--grid-major) 1.25px, transparent 1.25px),
+      linear-gradient(90deg, var(--grid-major) 1.25px, transparent 1.25px);
+    background-size: var(--cell) var(--cell), var(--cell) var(--cell), var(--major) var(--major), var(--major) var(--major);
+  }
+
+  /* Layout (Kojima construction): top bar; rail | stage | column. Fills the window exactly. */
+  .app { position: relative; height: 100vh; padding: var(--pad) var(--pad) 28px; display: flex; flex-direction: column; }
+  .label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }
+  .small { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; }
+  header.top {
+    display: flex; align-items: baseline; gap: 40px; flex: none;
+    padding: 0 0 26px; border-bottom: 1px solid var(--line);
+  }
+  header.top h1 { margin: 0; font-weight: 400; font-size: 14px; letter-spacing: 0.25em; text-transform: uppercase; }
+  header.top nav { display: flex; gap: 36px; }
+  header.top nav a { color: var(--dim); text-decoration: none; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; }
+  header.top nav a:hover { color: var(--ink); }
+  header.top nav a.on { color: var(--accent); }
+  header.top .ver { margin-left: auto; font-size: 11px; letter-spacing: 0.08em; color: var(--dim); }
+  .wrap {
+    flex: 1; min-height: 0; margin-top: 36px;
+    display: grid; grid-template-columns: 220px minmax(0, 1fr) 324px; gap: 32px;
+  }
+  .rail { padding-top: 4px; }
+  .rail .label { margin-bottom: 18px; }
+  .rail ul { list-style: none; margin: 0 0 44px; padding: 0; }
+  .rail li { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; padding: 9px 0; cursor: pointer; }
+  .rail li:hover { color: var(--accent); }
+  .rail li.muted { color: var(--dim); cursor: default; }
+  .rail li.muted:hover { color: var(--dim); }
+
+  .stage { min-height: 0; container-type: size; display: flex; align-items: flex-start; justify-content: center; background: var(--box-fill); }
+  .frame {
+    position: relative; border: 1px solid var(--ink);
+    width: min(100cqw, 100cqh, 690px); height: min(100cqw, 100cqh, 690px);   /* square: fits the space, capped at 690px */
+    padding: 40px 42px 28px; display: flex; flex-direction: column;
+  }
+  .frame .cross { position: absolute; width: 13px; height: 13px; }
+  .frame .cross::before, .frame .cross::after { content: ""; position: absolute; background: var(--ink); }
+  .frame .cross::before { left: 6px; top: 0; width: 1px; height: 13px; }
+  .frame .cross::after { top: 6px; left: 0; height: 1px; width: 13px; }
+  .frame .tl { left: 13px; top: 13px; } .frame .tr { right: 13px; top: 13px; }
+  .frame .bl { left: 13px; bottom: 13px; } .frame .br { right: 13px; bottom: 13px; }
+  .frame .row { flex: none; display: flex; justify-content: space-between; gap: 12px; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; padding-bottom: 12px; border-bottom: 1px solid var(--ink); }
+  .frame .row .back { display: none; cursor: pointer; color: var(--accent); }
+  .frame.reading .row .back { display: inline; }
+  .frame.reading .row .num { display: none; }
+
+  /* Resting state: the shape. Reading state: the text block, which is the only thing that scrolls. */
+  .frame .body { position: relative; flex: 1; min-height: 0; }
+  .frame .art, .frame .reader { position: absolute; inset: 0; transition: opacity 0.6s ease, transform 0.6s ease; }
+  .frame .art { display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .frame .art svg { width: 100%; height: 100%; overflow: visible; }
+  .frame .reader { opacity: 0; transform: translateY(12px); pointer-events: none; overflow-y: auto; padding: 28px 8px 28px 0; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+  .frame.reading .art { opacity: 0; transform: scale(0.96); pointer-events: none; }
+  .frame.reading .reader { opacity: 1; transform: none; pointer-events: auto; }
+  .frame .foot { flex: none; border-top: 1px solid var(--ink); padding-top: 18px; display: flex; justify-content: space-between; align-items: flex-end; transition: opacity 0.4s ease; }
+  .frame.reading .foot { opacity: 0.35; }
+  .frame .title { font-size: 26px; letter-spacing: 0.15em; text-transform: uppercase; }
+  .frame .code { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 12px; }
+  .frame .score { display: flex; gap: 12px; align-items: center; font-size: 12px; letter-spacing: 0.1em; }
+  .frame .sq { width: 18px; height: 18px; background: var(--accent); }
+
+  /* Reading text: reading size, normal case and tracking. */
+  .reader article { max-width: 66ch; font-family: var(--read-font); font-size: 16px; line-height: 1.7; letter-spacing: 0; }
+  .reader .kicker { font-family: var(--font); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin: 0 0 18px; }
+  .reader h2 { font-family: var(--font); font-weight: 400; font-size: 22px; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.3; margin: 0 0 28px; }
+  .reader h3 { font-family: var(--font); font-weight: 400; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin: 40px 0 14px; }
+  .reader p { margin: 0 0 1.1em; }
+  .reader blockquote { margin: 1.6em 0; padding-left: 18px; border-left: 1px solid var(--accent); color: var(--ink); }
+
+  .panel { min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; padding-right: 2px; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+  .cta { flex: none; border: 1px solid var(--accent); color: var(--accent); text-align: center; padding: 14px; font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; }
+  .card { flex: none; border: 1px solid var(--line); padding: 16px; background: var(--box-fill); }
+  .card .label { margin-bottom: 14px; }
+  .card .big { font-size: 26px; letter-spacing: 0.1em; }
+  .card .kv { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; }
+  .card .kv b { font-weight: 400; color: var(--ink); border: 1px solid var(--line); padding: 6px 10px; min-width: 110px; }
+  .card .kv span { color: var(--dim); }
+  .card .item { display: flex; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; }
+  .card .item:first-of-type { border-top: 0; }
+  .card .item:hover { color: var(--accent); }
+  .card .item i { font-style: normal; color: var(--dim); }
+  .bar { height: 1px; background: var(--line); position: relative; margin: 14px 0 8px; }
+  .bar i { position: absolute; left: 0; top: -1px; height: 3px; width: 62%; background: var(--accent); }
+  .card p { margin: 10px 0 0; font-size: 10px; line-height: 1.6; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+  .ticks { display: flex; gap: 3px; margin-top: 10px; }
+  .ticks span { flex: 1; height: 14px; border: 1px solid var(--line); }
+  .ticks span.on { background: var(--accent); border-color: var(--accent); }
+
+  /* Phone: normal page scroll; everything stacks; the reader grows in place. */
+  @media (max-width: 900px) {
+    body { overflow: auto; }
+    .app { height: auto; --pad: 24px; }
+    .wrap { display: flex; flex-direction: column; gap: 28px; }
+    .panel { overflow: visible; }
+    .stage { container-type: normal; }
+    .frame { height: auto; width: 100%; padding: 36px 22px 36px; }
+    .frame .body { min-height: 300px; }
+    .frame .art, .frame .reader { position: relative; inset: auto; }
+    .frame.reading .art { display: none; }
+    .frame:not(.reading) .reader { display: none; }
+    .frame .reader { overflow: visible; }
+    .frame .row { font-size: 9px; }
+    .frame .row span:nth-child(3) { text-align: center; }
+    .frame .foot { flex-wrap: wrap; gap: 12px; }
+    .frame .title { font-size: 20px; }
+    header.top { flex-wrap: wrap; gap: 18px; }
+    header.top nav { width: 100%; gap: 22px; flex-wrap: wrap; }
+  }
+
+  /* Study controls: not part of the design. Hidden until opened; press H to toggle. */
+  .ctl-toggle {
+    position: fixed; left: 16px; bottom: 16px; z-index: 11; font: 11px system-ui, sans-serif;
+    background: rgba(8, 8, 10, 0.9); color: #ddd; border: 1px solid #555; padding: 6px 10px; cursor: pointer;
+  }
+  .controls {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+    background: rgba(8, 8, 10, 0.95); color: #ddd; border-top: 1px solid #444;
+    font: 11px/1.4 system-ui, sans-serif; padding: 10px 16px 48px;
+    display: none; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 8px 20px;
+  }
+  body.show-controls .controls { display: grid; }
+  .controls .grp { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .controls .grp > b { width: 100%; font-weight: 600; color: #fff; }
+  .controls button { font: inherit; background: #222; color: #ddd; border: 1px solid #555; padding: 3px 8px; cursor: pointer; }
+  .controls button.on { background: #fff; color: #000; border-color: #fff; }
+  .controls input[type=range] { width: 140px; }
+  .controls select { max-width: 100%; font: inherit; background: #222; color: #ddd; border: 1px solid #555; }
+  .controls .sw { width: 22px; height: 22px; padding: 0; border: 1px solid #555; }
+  .controls .sw.on { outline: 2px solid #fff; outline-offset: 1px; }
+  .controls .read { font-family: ui-monospace, monospace; white-space: pre; }
+  .controls .warn { color: #ff8a80; }
+</style>
+</head>
+<body>
+<div class="blobs"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
+<div class="grid"></div>
+
+<div class="app">
+  <header class="top">
+    <h1>CTO Island</h1>
+    <nav><a class="on" data-go="Papers">Papers</a><a data-go="Initiatives">Initiatives</a><a data-go="Notebook">Notebook</a><a data-go="About">About</a></nav>
+    <span class="ver">STUDY — PLACEHOLDER TEXT</span>
+  </header>
+
+  <div class="wrap">
+    <aside class="rail">
+      <div class="label">Writing</div>
+      <ul><li data-go="Papers">Papers</li><li data-go="Initiatives">Initiatives</li><li data-go="Notebook">Notebook</li></ul>
+      <div class="label">Recent</div>
+      <ul><li data-read>Placeholder piece one</li><li data-read>Placeholder piece two</li><li data-read>Placeholder piece three</li></ul>
+      <div class="label">Elsewhere</div>
+      <ul><li class="muted">LinkedIn — placeholder</li><li class="muted">Contact — placeholder</li></ul>
+    </aside>
+
+    <main class="stage">
+      <div class="frame" id="frame">
+        <span class="cross tl"></span><span class="cross tr"></span><span class="cross bl"></span><span class="cross br"></span>
+        <div class="row">
+          <span class="back" id="back">← Back</span><span class="num" id="num">N°001</span>
+          <span id="series">CTO Island — Papers</span><span>Fig.01</span>
+        </div>
+        <div class="body">
+          <div class="art" id="art" title="Open">
+            <svg viewBox="0 0 400 400" aria-label="placeholder shape" preserveAspectRatio="xMidYMid meet">
+              <circle cx="200" cy="190" r="150" fill="none" stroke="var(--ink)" stroke-width="0.75" stroke-dasharray="1 6"/>
+              <circle cx="200" cy="190" r="118" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+              <circle cx="200" cy="190" r="70" fill="none" stroke="var(--ink)" stroke-width="1"/>
+              <line x1="200" y1="60" x2="200" y2="320" stroke="var(--ink)" stroke-width="0.75"/>
+              <line x1="70" y1="190" x2="330" y2="190" stroke="var(--ink)" stroke-width="0.75"/>
+              <circle cx="306" cy="296" r="7" fill="var(--accent)"/>
+              <path d="M40 360 l14 -24 l14 24 z" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+              <path d="M332 360 l14 -24 l14 24 z" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+              <text x="54" y="384" fill="var(--ink)" font-size="10" letter-spacing="1.5" text-anchor="middle" font-family="inherit">X.00</text>
+              <text x="346" y="384" fill="var(--ink)" font-size="10" letter-spacing="1.5" text-anchor="middle" font-family="inherit">T.00</text>
+            </svg>
+          </div>
+          <div class="reader" id="reader">
+            <article>
+              <p class="kicker">Paper — 2026 — placeholder</p>
+              <h2>Article title placeholder</h2>
+              <p>Placeholder text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+              <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus, nulla gravida orci a odio.</p>
+              <h3>Section heading placeholder</h3>
+              <p>Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor.</p>
+              <blockquote>Pull-quote placeholder. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam.</blockquote>
+              <p>Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat.</p>
+              <p>Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.</p>
+              <h3>Section heading placeholder</h3>
+              <p>Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo.</p>
+              <p>In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris.</p>
+              <p>Quisque augue tortor, facilisis sit amet, aliquam, suscipit vitae, cursus sed, arcu. Morbi quis sapien vitae nulla accumsan tristique. Sed feugiat, eros at facilisis condimentum, augue urna vulputate orci, sed commodo magna eros eget turpis.</p>
+              <p class="kicker" style="margin-top:40px">End — placeholder</p>
+            </article>
+          </div>
+        </div>
+        <div class="foot">
+          <div><div class="title" id="title">Article Title</div><div class="code">Paper / 2026 / Placeholder</div></div>
+          <div class="score"><span>00/00</span><span class="sq"></span></div>
+        </div>
+      </div>
+    </main>
+
+    <aside class="panel">
+      <div class="cta" data-read>◇ Read the latest</div>
+      <div class="card">
+        <div class="label">Metric — placeholder</div>
+        <div class="big">00.0</div>
+        <div class="bar"><i></i></div>
+        <div class="small" style="color:var(--dim)">Calm ——— Dense</div>
+      </div>
+      <div class="card">
+        <div class="label">Initiatives — placeholder</div>
+        <div class="kv"><span>Initiative A</span><b>In progress</b></div>
+        <div class="kv"><span>Initiative B</span><b>Planned</b></div>
+        <div class="kv"><span>Initiative C</span><b>Shipped</b></div>
+      </div>
+      <div class="card">
+        <div class="label">Latest papers — placeholder</div>
+        <div class="item" data-read><i>01</i>Paper title placeholder</div>
+        <div class="item" data-read><i>02</i>Paper title placeholder</div>
+        <div class="item" data-read><i>03</i>Paper title placeholder</div>
+      </div>
+      <div class="card">
+        <div class="label">Progress — placeholder</div>
+        <div class="ticks"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div>
+        <p>05 / 08 milestones — placeholder</p>
+      </div>
+      <div class="card">
+        <div class="label">Notebook — placeholder</div>
+        <p>Short note placeholder. A line or two from the notebook sits here in the label style.</p>
+      </div>
+      <div class="card">
+        <div class="label">Now — placeholder</div>
+        <div class="kv"><span>Reading</span><b>Placeholder</b></div>
+        <div class="kv"><span>Building</span><b>Placeholder</b></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<button class="ctl-toggle" id="ctl">Study controls (H)</button>
+<div class="controls" id="controls">
+  <div class="grp"><b>Field colour</b>
+    <button data-field="blue">Blue field · magenta accent</button>
+    <button data-field="mag">Magenta field · blue accent</button>
+  </div>
+  <div class="grp"><b>Blue (hue <span id="bhv"></span>°)</b>
+    <span id="bsw"></span><input type="range" id="bh" min="215" max="280" step="1">
+  </div>
+  <div class="grp"><b>Magenta (hue <span id="mhv"></span>°)</b>
+    <span id="msw"></span><input type="range" id="mh" min="315" max="360" step="1">
+  </div>
+  <div class="grp"><b>Field depth / saturation</b>
+    <input type="range" id="fl" min="0.12" max="0.42" step="0.01" title="lightness">
+    <input type="range" id="fc" min="0.02" max="0.18" step="0.005" title="chroma">
+  </div>
+  <div class="grp"><b>Grid (cell <span id="cellv"></span>px, strength ×<span id="gsv"></span>)</b>
+    <input type="range" id="cell" min="16" max="48" step="2">
+    <input type="range" id="gs" min="0" max="3" step="0.1">
+  </div>
+  <div class="grp"><b>Label font</b>
+    <select id="font">
+      <option value="system">Your system mono (Consolas on Windows) = Kojima</option>
+      <option value="Inconsolata">Inconsolata</option>
+      <option value="Cascadia Mono">Cascadia Mono</option>
+      <option value="JetBrains Mono">JetBrains Mono</option>
+      <option value="IBM Plex Mono">IBM Plex Mono</option>
+      <option value="Geist Mono">Geist Mono</option>
+    </select>
+  </div>
+  <div class="grp"><b>Reading face (open the article to judge)</b>
+    <select id="rf">
+      <option value="mono">Same mono as labels</option>
+      <option value="Source Serif 4">Serif — Source Serif 4</option>
+      <option value="IBM Plex Sans">Sans — IBM Plex Sans</option>
+    </select>
+  </div>
+  <div class="grp"><b>Layers</b>
+    <button id="blur">Background shapes</button>
+    <button id="fill">Box fill</button>
+  </div>
+  <div class="grp"><b>Contrast on field (approx.)</b><span class="read" id="read"></span></div>
+  <div class="grp"><b>Current picks (this is also the page link)</b><span class="read" id="picks"></span></div>
+</div>
+
+<script>
+// Study options only. Hues start where magenta's best blue partners sit (indigo to cobalt);
+// Danny's eye decides, and the sliders go beyond the presets.
+const BLUE_PRESETS = [230, 237, 244, 251, 258, 265];
+const MAG_PRESETS = [330, 337, 344, 351];
+const D = { f: 'blue', bh: 244, mh: 340, fl: 0.24, fc: 0.09, cell: 28, gs: 1, font: 'system', rf: 'mono', blur: 1, fill: 0 };
+const S = Object.assign({}, D);
+
+// Read state from the URL hash, e.g. #f=mag&bh=251
+for (const [k, v] of new URLSearchParams(location.hash.slice(1))) {
+  if (k in D) S[k] = typeof D[k] === 'number' ? Number(v) : v;
+}
+
+const ok = (l, c, h, a) => `oklch(${l.toFixed(3)} ${c.toFixed(3)} ${h.toFixed(1)}${a != null ? ' / ' + a : ''})`;
+
+// OKLCH -> linear sRGB -> relative luminance (for WCAG contrast).
+function lin(l, c, h) {
+  const a = c * Math.cos(h * Math.PI / 180), b = c * Math.sin(h * Math.PI / 180);
+  const l_ = (l + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+  const m_ = (l - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+  const s_ = (l - 0.0894841775 * a - 1.2914855480 * b) ** 3;
+  const cl = x => Math.min(1, Math.max(0, x));
+  return [cl(4.0767416621 * l_ - 3.3077115913 * m_ + 0.2309699292 * s_),
+          cl(-1.2684380046 * l_ + 2.6097574011 * m_ - 0.3413193965 * s_),
+          cl(-0.0041960863 * l_ - 0.7034186147 * m_ + 1.7076147010 * s_)];
+}
+const Y = ([r, g, b]) => 0.2126 * r + 0.7152 * g + 0.0722 * b;
+function hexLin(hex) {
+  const n = parseInt(hex.slice(1), 16), f = v => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+  return [f(n >> 16 & 255), f(n >> 8 & 255), f(n & 255)];
+}
+const ratio = (y1, y2) => { const [a, b] = y1 > y2 ? [y1, y2] : [y2, y1]; return (a + 0.05) / (b + 0.05); };
+
+function blobColours() {
+  const fieldH = S.f === 'blue' ? S.bh : S.mh, accH = S.f === 'blue' ? S.mh : S.bh, L = S.fl, C = S.fc;
+  return {
+    rest: [ok(Math.min(L + 0.14, 0.9), C + 0.05, fieldH, 0.9), ok(Math.min(L + 0.07, 0.9), C, fieldH + 16, 0.8), ok(Math.min(L + 0.12, 0.9), 0.1, accH, 0.35)],
+    peak: [ok(Math.min(L + 0.16, 0.9), C + 0.08, accH, 0.9), ok(Math.min(L + 0.08, 0.9), C + 0.03, accH - 15, 0.8), ok(Math.min(L + 0.12, 0.9), 0.1, accH, 0.35)],
+  };
+}
+function setBlobs(cols) { cols.forEach((c, i) => document.documentElement.style.setProperty('--blob' + (i + 1), c)); }
+
+function apply() {
+  const root = document.documentElement.style;
+  const fieldH = S.f === 'blue' ? S.bh : S.mh;
+  const accH = S.f === 'blue' ? S.mh : S.bh;
+  const accL = S.f === 'blue' ? 0.66 : 0.62, accC = S.f === 'blue' ? 0.25 : 0.19;
+  const L = S.fl, C = S.fc;
+
+  root.setProperty('--field', ok(L, C, fieldH));
+  setBlobs(blobColours().rest);
+  const gl = Math.min(L + 0.45, 0.92);
+  root.setProperty('--grid-fine', ok(gl, C * 0.8, fieldH, (0.06 * S.gs).toFixed(3)));
+  root.setProperty('--grid-major', ok(gl, C * 0.8, fieldH, (0.10 * S.gs).toFixed(3)));
+  root.setProperty('--cell', S.cell + 'px');
+  root.setProperty('--major', S.cell * 5 + 'px');
+  root.setProperty('--line', ok(Math.min(L + 0.12, 0.9), C * 0.7, fieldH));
+  root.setProperty('--dim', ok(Math.min(L + 0.42, 0.88), C * 0.35, fieldH));
+  root.setProperty('--accent', ok(accL, accC, accH));
+  root.setProperty('--box-fill', S.fill ? ok(Math.max(L - 0.04, 0.05), C, fieldH, 0.55) : 'transparent');
+  root.setProperty('--font', S.font === 'system'
+    ? 'ui-monospace, "SF Mono", Menlo, Consolas, monospace'
+    : `"${S.font}", ui-monospace, Consolas, monospace`);
+  root.setProperty('--read-font', S.rf === 'mono' ? 'var(--font)'
+    : S.rf === 'Source Serif 4' ? '"Source Serif 4", Georgia, serif' : '"IBM Plex Sans", system-ui, sans-serif');
+  document.body.classList.toggle('no-blur', !S.blur);
+
+  // Controls reflect state.
+  document.querySelectorAll('[data-field]').forEach(b => b.classList.toggle('on', b.dataset.field === S.f));
+  for (const id of ['bh', 'mh', 'fl', 'fc', 'cell', 'gs']) document.getElementById(id).value = S[id];
+  document.getElementById('font').value = S.font;
+  document.getElementById('rf').value = S.rf;
+  document.getElementById('bhv').textContent = S.bh;
+  document.getElementById('mhv').textContent = S.mh;
+  document.getElementById('cellv').textContent = S.cell;
+  document.getElementById('gsv').textContent = S.gs;
+  document.getElementById('blur').classList.toggle('on', !!S.blur);
+  document.getElementById('fill').classList.toggle('on', !!S.fill);
+  document.querySelectorAll('#bsw .sw').forEach(b => b.classList.toggle('on', +b.dataset.h === S.bh));
+  document.querySelectorAll('#msw .sw').forEach(b => b.classList.toggle('on', +b.dataset.h === S.mh));
+
+  // Contrast readout: text colours against the plain field (the shapes make some areas lighter).
+  const yField = Y(lin(L, C, fieldH));
+  const rows = [
+    ['ink ', ratio(Y(hexLin('#EFEBE0')), yField), 4.5],
+    ['dim ', ratio(Y(lin(Math.min(L + 0.42, 0.88), C * 0.35, fieldH)), yField), 4.5],
+    ['acc ', ratio(Y(lin(accL, accC, accH)), yField), 3],
+  ];
+  document.getElementById('read').innerHTML = rows.map(([n, r, min]) =>
+    `<span class="${r < min ? 'warn' : ''}">${n}${r.toFixed(1)}:1${r < min ? ' (below ' + min + ')' : ''}</span>`).join('\n');
+
+  const hash = new URLSearchParams(Object.fromEntries(Object.entries(S).map(([k, v]) => [k, String(v)]))).toString();
+  history.replaceState(null, '', location.search + '#' + hash);
+  document.getElementById('picks').textContent =
+    `field ${S.f === 'blue' ? 'blue' : 'magenta'} ${ok(L, C, fieldH)}\naccent ${ok(accL, accC, accH)}\n` +
+    `blue hue ${S.bh}  magenta hue ${S.mh}\ngrid ${S.cell}px / ${S.cell * 5}px  ×${S.gs}\nlabel font ${S.font}  reading ${S.rf}`;
+}
+
+// Swatches.
+function swatches(el, presets, key, l, c) {
+  const box = document.getElementById(el);
+  for (const h of presets) {
+    const b = document.createElement('button');
+    b.className = 'sw'; b.dataset.h = h; b.title = h + '°';
+    b.style.background = ok(l, c, h);
+    b.onclick = () => { S[key] = h; apply(); };
+    box.appendChild(b);
+  }
+}
+swatches('bsw', BLUE_PRESETS, 'bh', 0.55, 0.18);
+swatches('msw', MAG_PRESETS, 'mh', 0.62, 0.24);
+
+document.querySelectorAll('[data-field]').forEach(b => b.onclick = () => { S.f = b.dataset.field; apply(); });
+for (const id of ['bh', 'mh', 'fl', 'fc', 'cell', 'gs']) document.getElementById(id).oninput = e => { S[id] = Number(e.target.value); apply(); };
+document.getElementById('font').onchange = e => { S.font = e.target.value; apply(); };
+document.getElementById('rf').onchange = e => { S.rf = e.target.value; apply(); };
+document.getElementById('blur').onclick = () => { S.blur = S.blur ? 0 : 1; apply(); };
+document.getElementById('fill').onclick = () => { S.fill = S.fill ? 0 : 1; apply(); };
+
+// Morph: on a content change the shapes travel to a new arrangement (slow) while their colour
+// swings toward the accent and settles back (faster).
+let settle;
+function morph() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const r = (a, b) => a + Math.random() * (b - a);
+  document.querySelectorAll('.blobs span').forEach(b => {
+    b.style.setProperty('--x', r(-30, 55).toFixed(1) + 'vw');
+    b.style.setProperty('--y', r(-35, 60).toFixed(1) + 'vh');
+    b.style.setProperty('--s', r(0.8, 1.25).toFixed(2));
+  });
+  document.body.classList.add('morph-in');
+  setBlobs(blobColours().peak);
+  clearTimeout(settle);
+  settle = setTimeout(() => { document.body.classList.remove('morph-in'); setBlobs(blobColours().rest); }, 1100);
+}
+
+// Content: the square is the resting state; opening a piece swaps it for the reader.
+const frame = document.getElementById('frame');
+let n = 1;
+function openReader() { if (!frame.classList.contains('reading')) { frame.classList.add('reading'); document.getElementById('reader').scrollTop = 0; morph(); } }
+function closeReader() { if (frame.classList.contains('reading')) { frame.classList.remove('reading'); morph(); } }
+function goSection(name) {
+  n += 1;
+  document.getElementById('num').textContent = 'N°' + String(n).padStart(3, '0');
+  document.getElementById('series').textContent = 'CTO Island — ' + name;
+  document.querySelectorAll('header.top nav a').forEach(a => a.classList.toggle('on', a.dataset.go === name));
+  frame.classList.remove('reading');
+  morph();
+}
+document.getElementById('art').onclick = openReader;
+document.getElementById('back').onclick = closeReader;
+document.querySelectorAll('[data-read]').forEach(el => el.onclick = openReader);
+document.querySelectorAll('[data-go]').forEach(el => el.onclick = e => { e.preventDefault(); goSection(el.dataset.go); });
+
+const toggleControls = () => document.body.classList.toggle('show-controls');
+document.getElementById('ctl').onclick = toggleControls;
+document.addEventListener('keydown', e => { if (e.key.toLowerCase() === 'h' && !e.target.closest('select')) toggleControls(); });
+if (new URLSearchParams(location.search).has('clean')) document.getElementById('ctl').style.display = 'none';
+apply();
+</script>
+</body>
+</html>
