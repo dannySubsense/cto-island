@@ -1,8 +1,8 @@
-# 04-deploy
+# 03-deploy
 
 **Job:** take the built site live, and confirm it's live and correct.
 
-**Inputs:** a built site from `03-site/`.
+**Inputs:** a built site from `02-site/`.
 
 **Process:** not yet decided. The hosting choice is open.
 
