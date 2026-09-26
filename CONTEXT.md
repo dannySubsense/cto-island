@@ -7,10 +7,9 @@ the site. It publishes the content it receives and never writes that content.
 
 | Path | Job |
 |---|---|
-| `01-inbox/` | Content exactly as Danny delivers it |
-| `02-staging/` | One folder per piece, prepared for publishing, waiting for Danny's OK |
-| `03-site/` | The website: design, layout, code, published pages |
-| `04-deploy/` | Taking the site live |
+| `01-content/` | One folder per piece of Danny's writing, ready to publish, waiting for his OK |
+| `02-site/` | The website: design, layout, code, published pages |
+| `03-deploy/` | Taking the site live |
 | `_references/` | Stable reference material (design inspiration, rules) |
 | `docs/` | Northstar and decision records |
 | `scripts/`, `.claude/` | Session tooling (startup probe, relay command, hooks). Not a workspace; don't change as part of site work |
@@ -19,10 +18,9 @@ the site. It publishes the content it receives and never writes that content.
 
 | Task | Go to | Also load | Ignore |
 |---|---|---|---|
-| New content arrived | `01-inbox/CONTEXT.md` | — | `03-site/`, `04-deploy/` |
-| Prepare a piece for publishing | `02-staging/CONTEXT.md` | the piece in `01-inbox/` | `03-site/` code |
-| Design, layout, site code | `03-site/CONTEXT.md` | `_references/design/` | `01-inbox/`, `02-staging/` |
-| Deploy | `04-deploy/CONTEXT.md` | — | `01-inbox/`, `02-staging/` |
+| New content arrived, or prepare a piece | `01-content/CONTEXT.md` | — | `02-site/` code, `03-deploy/` |
+| Design, layout, site code | `02-site/CONTEXT.md` | `_references/design/` | `01-content/` |
+| Deploy | `03-deploy/CONTEXT.md` | — | `01-content/` |
 
 Each folder's `CONTEXT.md` states its job, inputs, process, and outputs. Load only what the task
 needs.
@@ -34,5 +32,5 @@ Example: `2026-10-02_paper_working-theory`.
 
 ## Human checkpoints
 
-- Nothing moves from `02-staging/` to `03-site/` without Danny's publish OK.
+- Nothing moves from `01-content/` to `02-site/` without Danny's publish OK.
 - Content text is never edited unless Danny asks.
