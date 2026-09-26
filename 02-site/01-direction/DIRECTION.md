@@ -14,10 +14,15 @@ Each decision is stated once, as it currently stands. **Status: in progress, not
   - **Spacing:** generous. The top bar and the left rail both have more room than Kojima, and the
     right column fills top to bottom with cards.
   - **The centre square** fits the space, up to 690px at most.
-  - **Reading:** clicking the square fades it out and shows the piece as a text block in the same
-    frame. Only that block scrolls; the page itself (bar, rail, column, background) stays still on
-    desktop. `← BACK` in the frame's header row returns to the square. On a phone the page scrolls
-    normally.
+  - **Reading, unframed** (Danny approved it, asking only for more width; Substack is the reference,
+    `study/reference/substack.md`):
+    - Clicking the square (or a piece) dissolves the frame: the border and crosshairs fade out, and
+      the Kojima header row (`← BACK · SECTION · FIG`) stays.
+    - The text stands on the grid in one column, 41em wide (about 780px) at 19px with 1.6 line
+      height: title, subtitle, then text, with thin rules between sections.
+    - While reading, the side columns dim and tighten to make room; hovering brings a column back.
+    - `← BACK` or Esc returns to the square. The background morph runs on open and on close.
+    - On a phone the page scrolls normally and opening jumps to the article (17px).
   - **Type:** Kojima's treatment: monospace, one weight, capitals, wide letter-spacing, small sizes.
 - **Background and grid come from Formas** (`study/reference/formas.md`): a deep colour field with
   large blurred shapes, under a two-level square grid (fine and major) whose lines are tinted from
@@ -45,8 +50,7 @@ Each decision is stated once, as it currently stands. **Status: in progress, not
   on Windows; Kojima uses the visitor's system monospace). Consolas is licensed with Windows, not
   for serving on a website, so the site needs a free, self-hostable font that matches it.
 - **Reading text:** the size and face for article body text. Kojima's sizes are for labels.
-- **The reader may need to be unframed.** Danny's direction: keeping a box around the text may be
-  too restrictive to read comfortably. The frame may need to fade away so the text block stands as
-  its own element, the way Medium and Substack present writing. Still to be worked out.
+- **Reader: still open** are the scroll model (text only or whole page) and the reading face. The
+  study page offers mono, Source Serif 4 and IBM Plex Sans.
 - **The centre stage with a long article:** how it behaves.
 - **Stack.**

@@ -77,7 +77,10 @@
   .wrap {
     flex: 1; min-height: 0; margin-top: 36px;
     display: grid; grid-template-columns: 220px minmax(0, 1fr) 324px; gap: 32px;
+    transition: grid-template-columns 0.6s ease;
   }
+  /* While reading unframed, the dimmed side columns tighten to give the text more width. */
+  body.unframed.reading-open .wrap { grid-template-columns: 180px minmax(0, 1fr) 260px; }
   .rail { padding-top: 4px; }
   .rail .label { margin-bottom: 18px; }
   .rail ul { list-style: none; margin: 0 0 44px; padding: 0; }
@@ -145,6 +148,36 @@
   .ticks span { flex: 1; height: 14px; border: 1px solid var(--line); }
   .ticks span.on { background: var(--accent); border-color: var(--accent); }
 
+  /* Unframed reader (Substack-like): the frame dissolves, the text column stands on the grid. */
+  .frame, .frame .cross, .frame .row { transition: border-color 0.6s ease, opacity 0.6s ease, padding 0.6s ease; }
+  body.unframed .frame.reading { border-color: transparent; padding: 0; width: min(100cqw, 800px); height: 100cqh; }
+  body.unframed .frame.reading .cross { opacity: 0; }
+  body.unframed .frame.reading .row { border-bottom-color: var(--line); padding-bottom: 14px; }
+  body.unframed .frame.reading .foot { display: none; }
+  body.unframed .frame .reader article { font-size: 19px; line-height: 1.6; max-width: 41em; margin: 0 auto; }
+  body.unframed .frame .reader { padding: 40px 12px 80px 0; }
+  body.unframed .reader h2 { font-size: 30px; line-height: 1.25; margin-bottom: 14px; }
+  body.unframed .reader .sub { display: block; }
+  .reader .sub { display: none; font-size: 0.95em; color: var(--dim); margin: 0 0 30px; }
+  body.unframed .reader hr { display: block; }
+  .reader hr { display: none; border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
+
+  /* While reading, the side columns step back (hover brings one back). */
+  .rail, .panel { transition: opacity 0.6s ease; }
+  body.dim-sides.reading-open .rail, body.dim-sides.reading-open .panel { opacity: 0.16; }
+  body.dim-sides.reading-open .rail:hover, body.dim-sides.reading-open .panel:hover { opacity: 1; }
+
+  /* Whole-page scroll while reading (Substack's model) instead of text-only scroll. */
+  body.page-scroll.reading-open { overflow: auto; }
+  body.page-scroll.reading-open .app { height: auto; min-height: 100vh; }
+  body.page-scroll.reading-open .wrap { align-items: start; }
+  body.page-scroll.reading-open .stage { container-type: normal; }
+  body.page-scroll.reading-open .frame { width: min(100%, 800px); height: auto; }
+  body.page-scroll.reading-open .frame .body { flex: none; }
+  body.page-scroll.reading-open .frame .art { display: none; }
+  body.page-scroll.reading-open .frame .reader { position: relative; inset: auto; overflow: visible; }
+  body.page-scroll.reading-open .rail, body.page-scroll.reading-open .panel { position: sticky; top: 24px; max-height: calc(100vh - 48px); }
+
   /* Phone: normal page scroll; everything stacks; the reader grows in place. */
   @media (max-width: 900px) {
     body { overflow: auto; }
@@ -162,6 +195,9 @@
     .frame .row span:nth-child(3) { text-align: center; }
     .frame .foot { flex-wrap: wrap; gap: 12px; }
     .frame .title { font-size: 20px; }
+    body.unframed .frame .reader article { font-size: 17px; }
+    body.unframed .reader h2 { font-size: 24px; }
+    body.dim-sides.reading-open .rail, body.dim-sides.reading-open .panel { opacity: 1; }
     header.top { flex-wrap: wrap; gap: 18px; }
     header.top nav { width: 100%; gap: 22px; flex-wrap: wrap; }
   }
@@ -237,6 +273,7 @@
             <article>
               <p class="kicker">Paper — 2026 — placeholder</p>
               <h2>Article title placeholder</h2>
+              <p class="sub">Subtitle placeholder: one line that says what the piece is about.</p>
               <p>Placeholder text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
               <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus, nulla gravida orci a odio.</p>
               <h3>Section heading placeholder</h3>
@@ -244,6 +281,7 @@
               <blockquote>Pull-quote placeholder. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam.</blockquote>
               <p>Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat.</p>
               <p>Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.</p>
+              <hr>
               <h3>Section heading placeholder</h3>
               <p>Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo.</p>
               <p>In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris.</p>
@@ -334,6 +372,11 @@
       <option value="IBM Plex Sans">Sans — IBM Plex Sans</option>
     </select>
   </div>
+  <div class="grp"><b>Reader (open a piece to judge)</b>
+    <button id="rs-un">Unframed</button><button id="rs-fr">Framed</button>
+    <button id="sd">Dim side columns</button>
+    <button id="ps-0">Text-only scroll</button><button id="ps-1">Whole-page scroll</button>
+  </div>
   <div class="grp"><b>Layers</b>
     <button id="blur">Background shapes</button>
     <button id="fill">Box fill</button>
@@ -347,7 +390,7 @@
 // Danny's eye decides, and the sliders go beyond the presets.
 const BLUE_PRESETS = [230, 237, 244, 251, 258, 265];
 const MAG_PRESETS = [330, 337, 344, 351];
-const D = { f: 'blue', bh: 244, mh: 340, fl: 0.24, fc: 0.09, cell: 28, gs: 1, font: 'system', rf: 'mono', blur: 1, fill: 0 };
+const D = { f: 'blue', bh: 244, mh: 340, fl: 0.24, fc: 0.09, cell: 28, gs: 1, font: 'system', rf: 'mono', blur: 1, fill: 0, rs: 'un', sd: 1, ps: 0 };
 const S = Object.assign({}, D);
 
 // Read state from the URL hash, e.g. #f=mag&bh=251
@@ -408,6 +451,14 @@ function apply() {
   root.setProperty('--read-font', S.rf === 'mono' ? 'var(--font)'
     : S.rf === 'Source Serif 4' ? '"Source Serif 4", Georgia, serif' : '"IBM Plex Sans", system-ui, sans-serif');
   document.body.classList.toggle('no-blur', !S.blur);
+  document.body.classList.toggle('unframed', S.rs === 'un');
+  document.body.classList.toggle('dim-sides', !!S.sd);
+  document.body.classList.toggle('page-scroll', !!S.ps);
+  document.getElementById('rs-un').classList.toggle('on', S.rs === 'un');
+  document.getElementById('rs-fr').classList.toggle('on', S.rs === 'fr');
+  document.getElementById('sd').classList.toggle('on', !!S.sd);
+  document.getElementById('ps-0').classList.toggle('on', !S.ps);
+  document.getElementById('ps-1').classList.toggle('on', !!S.ps);
 
   // Controls reflect state.
   document.querySelectorAll('[data-field]').forEach(b => b.classList.toggle('on', b.dataset.field === S.f));
@@ -460,6 +511,11 @@ document.getElementById('font').onchange = e => { S.font = e.target.value; apply
 document.getElementById('rf').onchange = e => { S.rf = e.target.value; apply(); };
 document.getElementById('blur').onclick = () => { S.blur = S.blur ? 0 : 1; apply(); };
 document.getElementById('fill').onclick = () => { S.fill = S.fill ? 0 : 1; apply(); };
+document.getElementById('rs-un').onclick = () => { S.rs = 'un'; apply(); };
+document.getElementById('rs-fr').onclick = () => { S.rs = 'fr'; apply(); };
+document.getElementById('sd').onclick = () => { S.sd = S.sd ? 0 : 1; apply(); };
+document.getElementById('ps-0').onclick = () => { S.ps = 0; apply(); };
+document.getElementById('ps-1').onclick = () => { S.ps = 1; apply(); };
 
 // Morph: on a content change the shapes travel to a new arrangement (slow) while their colour
 // swings toward the accent and settles back (faster).
@@ -481,14 +537,25 @@ function morph() {
 // Content: the square is the resting state; opening a piece swaps it for the reader.
 const frame = document.getElementById('frame');
 let n = 1;
-function openReader() { if (!frame.classList.contains('reading')) { frame.classList.add('reading'); document.getElementById('reader').scrollTop = 0; morph(); } }
-function closeReader() { if (frame.classList.contains('reading')) { frame.classList.remove('reading'); morph(); } }
+function openReader() {
+  if (frame.classList.contains('reading')) return;
+  frame.classList.add('reading'); document.body.classList.add('reading-open');
+  document.getElementById('reader').scrollTop = 0; morph();
+  if (matchMedia('(max-width: 900px)').matches) frame.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function closeReader() {
+  if (!frame.classList.contains('reading')) return;
+  frame.classList.remove('reading'); document.body.classList.remove('reading-open');
+  window.scrollTo(0, 0); morph();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeReader(); });
 function goSection(name) {
   n += 1;
   document.getElementById('num').textContent = 'N°' + String(n).padStart(3, '0');
   document.getElementById('series').textContent = 'CTO Island — ' + name;
   document.querySelectorAll('header.top nav a').forEach(a => a.classList.toggle('on', a.dataset.go === name));
-  frame.classList.remove('reading');
+  frame.classList.remove('reading'); document.body.classList.remove('reading-open');
+  window.scrollTo(0, 0);
   morph();
 }
 document.getElementById('art').onclick = openReader;
