@@ -18,8 +18,10 @@ Each decision is stated once, as it currently stands. **Status: in progress, not
     `study/reference/substack.md`):
     - Clicking the square (or a piece) dissolves the frame: the border and crosshairs fade out, and
       the Kojima header row (`← BACK · SECTION · FIG`) stays.
-    - The text stands on the grid in one column, 41em wide (about 780px) at 19px with 1.6 line
-      height: title, subtitle, then text, with thin rules between sections.
+    - The text stands on the grid in one column, 19px with 1.6 line height: title, subtitle, then
+      text, with thin rules between sections. The column is 1000px wide (about 103–105 characters
+      per line; it narrows to fit smaller screens). Danny treats the width as a variable to tune
+      later.
     - While reading, the side columns dim and tighten to make room; hovering brings a column back.
     - `← BACK` or Esc returns to the square. The background morph runs on open and on close.
     - On a phone the page scrolls normally and opening jumps to the article (17px).

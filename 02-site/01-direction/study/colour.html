@@ -80,7 +80,7 @@
     transition: grid-template-columns 0.6s ease;
   }
   /* While reading unframed, the dimmed side columns tighten to give the text more width. */
-  body.unframed.reading-open .wrap { grid-template-columns: 180px minmax(0, 1fr) 260px; }
+  body.unframed.reading-open .wrap { grid-template-columns: 140px minmax(0, 1fr) 200px; gap: 24px; }
   .rail { padding-top: 4px; }
   .rail .label { margin-bottom: 18px; }
   .rail ul { list-style: none; margin: 0 0 44px; padding: 0; }
@@ -150,11 +150,11 @@
 
   /* Unframed reader (Substack-like): the frame dissolves, the text column stands on the grid. */
   .frame, .frame .cross, .frame .row { transition: border-color 0.6s ease, opacity 0.6s ease, padding 0.6s ease; }
-  body.unframed .frame.reading { border-color: transparent; padding: 0; width: min(100cqw, 800px); height: 100cqh; }
+  body.unframed .frame.reading { border-color: transparent; padding: 0; width: min(100cqw, 1000px); height: 100cqh; }
   body.unframed .frame.reading .cross { opacity: 0; }
   body.unframed .frame.reading .row { border-bottom-color: var(--line); padding-bottom: 14px; }
   body.unframed .frame.reading .foot { display: none; }
-  body.unframed .frame .reader article { font-size: 19px; line-height: 1.6; max-width: 41em; margin: 0 auto; }
+  body.unframed .frame .reader article { font-size: 19px; line-height: 1.6; max-width: 1000px; margin: 0 auto; }
   body.unframed .frame .reader { padding: 40px 12px 80px 0; }
   body.unframed .reader h2 { font-size: 30px; line-height: 1.25; margin-bottom: 14px; }
   body.unframed .reader .sub { display: block; }
@@ -172,7 +172,7 @@
   body.page-scroll.reading-open .app { height: auto; min-height: 100vh; }
   body.page-scroll.reading-open .wrap { align-items: start; }
   body.page-scroll.reading-open .stage { container-type: normal; }
-  body.page-scroll.reading-open .frame { width: min(100%, 800px); height: auto; }
+  body.page-scroll.reading-open .frame { width: min(100%, 1000px); height: auto; }
   body.page-scroll.reading-open .frame .body { flex: none; }
   body.page-scroll.reading-open .frame .art { display: none; }
   body.page-scroll.reading-open .frame .reader { position: relative; inset: auto; overflow: visible; }
