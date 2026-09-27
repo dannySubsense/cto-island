@@ -1,6 +1,8 @@
 # Direction
 
-Each decision is stated once, as it currently stands. **Status: in progress, not yet approved.**
+Each decision is stated once, as it currently stands. **Status:** Danny called the layout done on
+2026-09-27, with a later refinement round to come. The items under Open are still open, and
+`DIRECTION.md` as a whole isn't approved yet (the stage checkpoint).
 
 ## Decided by Danny
 
@@ -41,18 +43,20 @@ Each decision is stated once, as it currently stands. **Status: in progress, not
 ## Open
 
 - **Fine-tuning the exact blue and magenta,** if Danny wants to move them from the current picks.
-- **Background morph on a content change.** Danny likes it, but it still needs refining. When content
-  changes (a new section, opening a piece, going back), the soft shapes travel across the page to a
-  new arrangement (about 5s, slow in and slow out) while their colour swings to pink (about 0.9s)
-  and settles back to blue (about 2.2s). The shapes are soft gradients that move without being
-  re-blurred each frame, which is what removes the stutter. The clouds stay blue to
-  violet, with no green. Demo in the study page: click any menu or rail item
-  (`study/shots/morph-400ms.png`, `study/shots/morph-3000ms.png`).
-- **The monospace font.** Target: **Consolas**, which is what Danny's Kojima screenshot shows (taken
-  on Windows; Kojima uses the visitor's system monospace). Consolas is licensed with Windows, not
-  for serving on a website, so the site needs a free, self-hostable font that matches it.
-- **Reading text:** the size and face for article body text. Kojima's sizes are for labels.
-- **Reader: still open** are the scroll model (text only or whole page) and the reading face. The
-  study page offers mono, Source Serif 4 and IBM Plex Sans.
-- **The centre stage with a long article:** how it behaves.
+- **Background morph on a content change.** Danny likes it; refine later. When content changes (a
+  new section, opening a piece, going back), the soft shapes travel across the page to a new
+  arrangement (about 5s, slow in and slow out). Their colour swings to pink (about 0.9s) and settles
+  back to blue (about 2.2s). The shapes are soft gradients that move without being re-blurred each
+  frame. The clouds stay blue to violet, with no green. Demo: click any menu or rail item in
+  `study/colour.html` (`study/shots/morph-400ms.png`, `study/shots/morph-3000ms.png`).
+- **The label monospace.** Target: **Consolas**, which is what Danny's Kojima screenshot shows (taken
+  on Windows; Kojima uses the visitor's system monospace). Consolas is licensed with Windows, not for
+  serving on a website, so the site needs a free, self-hostable font that matches it. Candidates in
+  the study page: Inconsolata, Cascadia Mono, JetBrains Mono, IBM Plex Mono, Geist Mono.
+- **Reading face:** mono, Source Serif 4 or IBM Plex Sans (study page). The size is settled at 19px,
+  with 1.6 line height.
+- **Scroll model while reading:** text only (the page stays still) or the whole page, as Substack
+  does.
+- **Side columns while reading:** they currently tighten to 140/200px, and their faint text wraps.
+  The alternative is to fade them out completely.
 - **Stack.**
