@@ -36,6 +36,9 @@
 - `study/reference/`: measurements and readings for each reference
 - `study/`: the study pages used to make the decisions
 
+**Viewing the study page:** `study/README.md`, which covers starting the server, the URL and the
+controls.
+
 **Tools:** `tools/measure_reference.py` runs `tools/extract.js`, which is vendored unmodified from
 taste-skill (MIT). Its colour `areaPct` double-counts nested elements, so judge which colours
 dominate from the screenshot. Details: `_references/tools/taste-skill.md`.
